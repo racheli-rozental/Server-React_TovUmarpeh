@@ -315,7 +315,7 @@ app.MapGet("/enrollments/{activityId}", async (UsersDBContext context, int activ
         .Select(e => new 
         {
             e.EnrollmentId,
-            e.IdNumberNavigation.IdNumber,
+            e.IdNumberNavigation!.IdNumber,
             e.IdNumberNavigation.FirstName,
             e.IdNumberNavigation.LastName,
          
