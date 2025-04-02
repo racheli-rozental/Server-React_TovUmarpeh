@@ -183,17 +183,25 @@ app.MapDelete("/users/{id}", async (UsersDBContext context, int id) =>
     }
     
     // מחפש את הקובץ של המשתמש
-    var file = await context.UsersFiles.FirstOrDefaultAsync(f => f.IdNumber == id);
+    var file = await context.UsersFiles.FindAsync(id);
     if (file != null)
     {
         context.UsersFiles.Remove(file); // מסיר את הקובץ היחיד
     }
-    
+
+    // מחפש את הרשומות התלויות בטבלת enrollments
+    var enrollments = await context.Enrollments.Where(e => e.IdNumber == user.IdNumber).ToListAsync();
+    if (enrollments.Any())
+    {
+        context.Enrollments.RemoveRange(enrollments); // מסיר את כל הרשומות התלויות
+    }
+
     context.UsersTables.Remove(user); // מסיר את המשתמש
     
     await context.SaveChangesAsync();
     return Results.NoContent();
 });
+
 
 //files
 app.MapGet("/file", async (UsersDBContext context) =>
