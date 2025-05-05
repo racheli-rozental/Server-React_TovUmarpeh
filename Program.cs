@@ -9,7 +9,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // אפשר גישה רק מכתובת זו
+        policy.WithOrigins("https://manager-tuvumarpeh.onrender.com") // אפשר גישה רק מכתובת זו
               .AllowAnyHeader() // אפשר כל סוגי הכותרות
               .AllowAnyMethod(); // אפשר כל סוגי הבקשות (GET, POST וכו')
     });
@@ -224,27 +224,6 @@ app.MapPost("/file", async (UsersDBContext context, UsersFile file) =>
     await context.SaveChangesAsync();
     return Results.Created($"/users/{file.IdNumber}", file);
 });
-// app.MapPut("/file/{id}", async (UsersDBContext context, int id, UsersFile user) =>
-// {
-//     if (id != user.IdNumber)
-//     {
-//         return Results.BadRequest();
-//     }
-
-//     var existingUser = await context.UsersFiles.FindAsync(id);
-//     if (existingUser == null)
-//     {
-//         return Results.NotFound();
-//     }
-
-//     existingUser.FileMedicines = user.FileMedicines;
-//     existingUser.FilePersonalPreferences = user.FilePersonalPreferences;
-//     existingUser.FilePowerOfAttorney= user.FilePowerOfAttorney;
-
-//     context.Entry(existingUser).State = EntityState.Modified;
-//     await context.SaveChangesAsync();
-//     return Results.NoContent();
-// });
 //activities
   app.MapPost("/addActivity", async (UsersDBContext context, Activity activity) =>
     {
